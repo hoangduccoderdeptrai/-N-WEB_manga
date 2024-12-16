@@ -1,0 +1,1135 @@
+.menu-list-item a {
+    word-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+    .menu-list-item {
+        width: 100%;
+        text-align: center;
+    }
+
+    .menu-list-item a {
+        margin-top: 1px;
+        display: block;
+    }
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background: #000;
+}
+.logotitle {
+    width: 205px;
+    height: 372px;
+    background-image: linear-gradient(
+        to right,
+        #e50914 33%,
+        #000 33%,
+        #000 67%,
+        #e50914 67%,
+        #e50914 100%
+    );
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.logo:before {
+    content: "";
+    width: 84px;
+    height: 100%;
+    position: absolute;
+    background: #e50914;
+    top: 0;
+    opacity: 1;
+    transform: skewX(18deg);
+    left: 29.55%;
+    box-shadow: inset 0 1px 2px rgba(0.2, 0.2, 0.2, 0.2),
+        0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22),
+        0 0 100px rgba(0.3, 0.3, 0.3, 0.3);
+}
+
+@media screen and (min-width: 100%) and (max-width: 100%) and (orientation: landscape) {
+    body,
+    html {
+        font-size: 0.75vw;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+}
+* {
+    margin: 0;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    overflow-x: hidden; /* Khoá cuộn ngang */
+}
+
+.navbar {
+    width: 100%;
+    height: 60px;
+    background-color: black;
+
+    top: 0;
+    font-size: small;
+}
+.navbar a {
+    color: white;
+    text-decoration: none;
+}
+.navbar a:hover {
+    color: gray;
+}
+.navbar-container {
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+    height: 100%;
+    color: white;
+    font-family: "Sen", sans-serif;
+}
+
+/* Watch */
+.episode-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Khoảng cách giữa các button */
+}
+
+.episode-button {
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    background-color: red;
+    color: rgb(253, 253, 253); /* Màu chữ đỏ */
+    padding: 10px 20px; /* Kích thước button */
+    border-radius: 5px; /* Bo tròn các góc */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* Hiệu ứng hover */
+    text-decoration: none;
+}
+
+.episode-button:hover {
+    background-color: rgb(146, 22, 22); /* Màu nền đỏ khi hover */
+    color: white; /* Màu chữ trắng khi hover */
+}
+.episode-button.active {
+    background-color: rgb(100, 10, 10); /* Màu nền đậm hơn cho nút hiện tại */
+    color: white; /* Màu chữ trắng */
+}
+.video_container h2 {
+    font-size: 50px;
+    color: #ffffff;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.video_container {
+    
+    margin-top: 10px;
+    margin-left: 95px;
+    text-align: left;
+    display: flex;
+    justify-content: left; /* Canh giữa theo chiều ngang */
+    align-items: left; /* Canh giữa theo chiều dọc */
+}
+
+.video-card {
+    font: 20px/28px "Lato", Arial, sans-serif;
+    color: #A9A8A3;
+    padding: 10px 0 20px 0;
+    height: auto;
+  }
+  
+
+.video_streaming {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.video_streaming video {
+    width: 90%;
+    /* width: auto; */
+    margin-top: 30px; 
+    border-radius: 5px;
+    animation: slideRight 0.6s ease-in-out;
+    align-self: center;
+}
+
+.video_streaming .trailer {
+    width: 60%;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url(../img/movie-4.jpg);
+    background-position: top;
+}
+
+.video_streaming .trailer:nth-of-type(2) {
+    background-image: url(../img/movie-2.jpg);
+}
+
+.video_streaming .trailer:nth-of-type(3) {
+    background-image: url(../img/movie-3.jpg);
+}
+.video_containervideo{
+    display: flex;
+    justify-content: center; /* Canh giữa theo chiều ngang */
+    align-items: center; /* Canh giữa theo chiều dọc */
+}
+/* End Watch */
+
+/* ranking */
+h3 {
+    color: white;
+    margin-top: 50px; /* Đẩy tiêu đề xuống phía dưới */
+}
+.number-row {
+    display: flex;
+    position: relative;
+    left: 0;
+    transition: left 0.5s ease-out;
+}
+.number-cell {
+    outline: 10px gray;
+    color: black;
+    font-size: 225px;
+    white-space: nowrap;
+    width: 280px; /* Đủ rộng để chứa số và hình ảnh */
+    display: flex; /* Hiển thị số và hình ảnh theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: space-between; /* Căn hình ảnh và số một cách đều */
+    padding: 0 30px; /* Khoảng cách giữa số và hình ảnh */
+    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    text-shadow: -3px -3px 0 gray, 3px -3px 0 gray, -3px 3px 0 gray,
+        3px 3px 0 gray;
+}
+
+.empty-cell {
+    left: 0;
+    object-fit: contain;
+    transition: transform 600ms;
+}
+
+.empty-cell:hover {
+    transform: scale(1.08);
+    display: inline-block;
+}
+.empty-cell a{
+    position: absolute;
+    left: -40px;
+    top: -130px;
+}
+.overflow-container {
+    width: 200%;
+    height: 300px;
+    /* background-color:black; */
+    overflow: hidden;
+    position: relative;
+}
+
+.pop-up {
+    position: fixed;
+    bottom: 50px;
+    opacity: 1;
+    left: 540px;
+    width: 409px;
+    height: 578px;
+    background-color: darkgray;
+    padding: 10px;
+    display: none;
+    transition: all 0.3s ease-in-out;
+}
+
+/* navbar */
+
+.logo-container {
+    flex: 1;
+}
+
+.logos {
+    max-width: 100px;
+    font-size: 30px;
+    color: #e50914;
+    margin-right: 30px;
+    
+}
+
+
+
+.logochat {
+    max-width: 50px;
+    font-size: 30px;
+    color: #e50914;
+    margin-right: auto;
+    margin-left: 4px;
+    position: absolute;
+}
+
+.logochatimg {
+    max-height: 40px;
+    max-width: auto;
+    font-size: 30px;
+    color: #e50914;
+}
+
+.menu-container {
+    flex: 6;
+}
+
+.menu-list {
+    display: flex;
+    list-style: none;
+}
+
+.menu-list-item {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 25px;
+    font-size: small;
+}
+
+.menu-list-item.active {
+    font-weight: bold;
+}
+.profile-container {
+    display: none;
+    /* padding: 0 20px; */
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.profile-text-container {
+    margin: 10px;
+}
+
+.profile-picture {
+    margin-left: 10px;
+    display: flex;
+    width: 32px; /* Điều chỉnh chiều rộng của hình ảnh */
+    height: 32px; /* Điều chỉnh chiều cao của hình ảnh */
+    border-radius: 50%; /* Đảm bảo hình ảnh là hình tròn */
+    object-fit: cover;
+}
+
+.toggle {
+    width: 40px;
+    height: 20px;
+    background-color: white;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+}
+
+.toggle-icon {
+    color: goldenrod;
+}
+
+.toggle-ball {
+    width: 18px;
+    height: 18px;
+    background-color: black;
+    position: absolute;
+    right: 1px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 1s ease all;
+}
+
+.sidebar {
+    width: 50px;
+    height: 100%;
+    background-color: black;
+    position: fixed;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
+}
+
+.left-menu-icon {
+    color: white;
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+
+.container {
+    background-color: #151515;
+    min-height: calc(100vh - 50px);
+    color: white;
+}
+
+.content-container {
+    margin-left: 50px;
+}
+
+.featured-content {
+    height: 50vh;
+    padding: 50px;
+}
+
+.featured-title {
+    width: 200px;
+}
+
+.featured-desc {
+    width: 500px;
+    color: lightgray;
+    margin: 30px 0;
+}
+
+.featured-button {
+    background-color: #4dbf00;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-weight: bold;
+}
+
+.movie-list-container {
+    padding: 0 20px;
+}
+
+.movie-list-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.movie-list {
+    display: flex;
+    align-items: center;
+    height: 300px;
+    transform: translateX(0);
+    transition: all 1s ease-in-out;
+}
+
+.movie-list-item {
+    margin-right: 30px;
+    position: relative;
+}
+
+.movie-list-item:hover .movie-list-item-img {
+    transform: scale(1);
+    margin: 0 30px;
+    opacity: 0.5;
+}
+
+.movie-list-item:hover .movie-list-item-title,
+.movie-list-item:hover .movie-list-item-desc,
+.movie-list-item:hover .movie-list-item-button {
+    opacity: 1;
+}
+
+.movie-list-item-img {
+    transition: all 1s ease-in-out;
+    width: 270px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.movie-list-item-title {
+    background-color: #333;
+    padding: 0 10px;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 10%;
+    left: 50px;
+    opacity: 0;
+    transition: 1s all ease-in-out;
+}
+
+.movie-list-item-desc {
+    background-color: #333;
+    padding: 10px;
+    font-size: 14px;
+    position: absolute;
+    top: 30%;
+    left: 50px;
+    width: 230px;
+    opacity: 0;
+    transition: 1s all ease-in-out;
+}
+
+.movie-list-item-button {
+    padding: 10px;
+    background-color: #4dbf00;
+    color: white;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+    left: 50px;
+    opacity: 0;
+    transition: 1s all ease-in-out;
+}
+
+
+
+.container.active {
+    background-color: white;
+}
+
+.movie-list-title.active {
+    color: black;
+}
+
+.navbar-container.active {
+    background-color: white;
+
+    color: black;
+}
+
+.sidebar.active {
+    background-color: white;
+}
+
+.left-menu-icon.active {
+    color: black;
+}
+
+.toggle.active {
+    background-color: black;
+}
+
+.toggle-ball.active {
+    background-color: white;
+    transform: translateX(-20px);
+}
+
+@media only screen and (max-width: 940px) {
+    .menu-container {
+        display: none;
+    }
+}
+
+.header-tag {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-inline: 24px;
+    color: white;
+    z-index: 5;
+}
+.header-title {
+    color: #e50914;
+}
+.sec-2 {
+    height: 100vh;
+    width: 100%;
+}
+.video {
+    position: relative;
+    object-fit: cover;
+    background-position: center;
+    transition: all 500ms ease-in-out;
+    height: 100vh;
+}
+.movie-detail {
+    display: none;
+    position: absolute;
+    top: 5%;
+    margin-left: 16px;
+    color: white;
+    font-family: "Poppins", sans-serif;
+}
+.movie-detail h3 {
+    font-size: 20px;
+}
+
+.movie-detail {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    width: 100%;
+    position: absolute;
+    top: 40%;
+    margin-left: 30px;
+    color: white;
+}
+.movie-detail h3 {
+    font-size: 70px;
+    margin-block-end: -10px;
+    line-height: 60px;
+}
+
+.btn_play,
+.btn_seemore {
+    display: flex;
+    border-radius: 6px;
+    gap: 6px;
+    align-items: center;
+    padding-inline: 12px;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    height: 50px;
+}
+.btn_play {
+    padding-right: 16px;
+}
+.bx-play,
+.btn_seemore {
+    font-size: 30px;
+}
+.btn_video {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.play {
+    font-weight: bold;
+}
+.info-other {
+    font-size: medium;
+    z-index: 1;
+}
+.btn_seemore {
+    background-color: rgba(255, 255, 255, 0.202);
+
+    color: white;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #111;
+}
+
+.row-poster {
+    
+    object-fit: contain;
+   
+    margin-right: 10px;
+    transition: transform 450ms;
+    white-space: nowrap;
+    display: flex;
+    border-radius: 2px;
+}
+
+.row-posters {
+    position: absolute;
+    display: flex;
+    /* overflow-x: hidden;
+    overflow-y: scroll;*/
+    padding: 20px;
+    transition: left 0.5s ease-out;
+}
+
+.row-poster:hover {
+    transform: scale(1);
+}
+
+.row-posters::-webkit-scrollbar {
+    display: none;
+}
+
+.row-posterLarge {
+    max-height: 150px;
+}
+
+.row-posterLarge:hover {
+    transform: scale(1);
+}
+
+.img_poster {
+    width: 300px;
+    height: auto;
+}
+
+
+
+.member-footer {
+    color: grey;
+    margin: 20px auto 0;
+    max-width: 100%;
+    padding: 0 4%;
+    z-index: 1;
+}
+
+.member-footer .member-footer-links {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 13px;
+    margin: 0 0 14px;
+    padding: 0;
+    color: grey;
+}
+
+.social-links {
+    display: flex;
+    margin-bottom: 1em;
+    color: grey;
+    padding: 10px;
+}
+
+.social-link {
+    padding: 10px;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #141414;
+}
+.member-footer .member-footer-link-wrapper {
+    box-sizing: border-box;
+    flex: 0 0 25% !important;
+    list-style-type: none;
+    margin-bottom: 16px;
+    padding-right: 22px;
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+* {
+    letter-spacing: 0 !important;
+}
+
+user agent stylesheet div {
+    display: block;
+}
+
+/* Màu sắc của các thẻ <a> */
+.member-footer .member-footer-links a {
+    color: #aaaaaa; /* Màu mặc định của các thẻ <a> */
+    text-decoration: none; /* Loại bỏ gạch chân mặc định */
+}
+
+/* Màu sắc khi hover */
+.member-footer .member-footer-links a:hover {
+    text-decoration: underline;
+}
+
+.scroll-right-poster:hover {
+    opacity: 0.5;
+}
+.scroll-right-poster {
+    margin-top: 15px;
+    outline: 0 !important;
+    text-align: center;
+    transition: all 400ms ease-out;
+    /* -moz-transition: all 400ms ease-out;
+    -webkit-transition: all 400ms ease-out; */
+    position: relative;
+    left: 95.5%;
+    /* transform: translateY(-50%); */
+    background-color: black;
+    border-radius: 5px;
+    color: white;
+    opacity: 0.1;
+    width: 55px;
+    height: 150px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    z-index: 900; /* Đảm bảo nút lớp trên cùng */
+    /* margin-top: 70px; */
+}
+
+/* lehoanduc sửa phần logout trên thanh headerr */
+.form-info {
+    position: absolute;
+    z-index: 4;
+    /* color: black !important; */
+    background: white;
+    border-radius: 2px;
+    top: 50px;
+    right: 10px;
+    /* padding: 5px 10px; */
+    color: black !important;
+    /* margin-block: 10px; */
+    padding-block: 10px;
+}
+.hidden {
+    display: none;
+}
+.show {
+    display: block;
+}
+a.dropdown-item {
+    color: black;
+    margin-bottom: 5px;
+    padding: 10px 15px;
+    margin-top: 5px;
+}
+
+.dropdown-divider {
+    border-bottom: 1px solid black;
+    margin-block: 6px;
+    opacity: 0.3;
+}
+
+img.img-profile.rounded-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+.nav-link {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dropdown {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.rowContainer .rowContent .slider .handle {
+    background: hsla(0, 0%, 8%, 0.5);
+}
+.slider .handle.handleNext {
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+    right: 0;
+}
+.slider .handle.active {
+    cursor: pointer;
+}
+
+.video-container {
+    position: relative;
+    align-items: center;
+}
+.videocontainer {
+    width: 100%;
+    height: 100%;
+}
+
+.scroll-right {
+    outline: 0 !important;
+    text-align: left;
+    transition: all 400ms ease-out;
+    -moz-transition: all 400ms ease-out;
+    -webkit-transition: all 400ms ease-out;
+    position: relative;
+    border-radius: 12px;
+    right: -48%;
+    bottom: 250px;
+    opacity: 0.1;
+    width: 150px;
+    height: 204px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    z-index: 1000;
+}
+.scroll-right:hover {
+    opacity: 1;
+    margin-left: -5px;
+}
+
+/* chat bot */
+
+.--dark-theme {
+    --chat-background: rgba(10, 14, 14, 0.95);
+    --chat-panel-background: #131719;
+    --chat-bubble-background: #14181a;
+    --chat-bubble-active-background: #171a1b;
+    --chat-add-button-background: #212324;
+    --chat-send-button-background: #e50914;
+    --chat-text-color: #a3a3a3;
+    --chat-options-svg: #a3a3a3;
+}
+#chat .btn-send-detail .send-message-button {
+    background: #e50914;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 50%;
+    transition: 0.3s ease;
+}
+#chat .btn-send-detail .send-message-button:active {
+    transform: scale(0.97);
+}
+#chat .btn-send-detail .send-message-button svg {
+    margin: 1px -1px;
+}
+
+#chat .btn-icon {
+    position: relative;
+    cursor: pointer;
+}
+#chat .btn-icon svg {
+    stroke: #fff;
+    fill: #fff;
+    width: 50%;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.logo-chat {
+    position: fixed;
+    right: 40px;
+    bottom: 40px;
+    padding: 10px;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+span.animation-logo {
+    position: absolute;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    background: #e50914;
+    border-radius: 50px;
+    z-index: 0;
+    opacity: 0.7;
+    animation: zoom_out 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    transition: left 0.5s ease-out;
+}
+
+.logo-message :hover {
+    transform: scale(1.1);
+}
+
+.logo-message {
+    background-color: #e50914;
+    z-index: 1001;
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 450ms;
+}
+
+i.bx.bx-message-dots {
+    font-size: 30px;
+}
+
+@keyframes zoom_out {
+    75%,
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+.chat-content {
+    position: fixed;
+    bottom: 30px;
+    right: 40px;
+    z-index: 1000;
+    max-width: 300px;
+    height: 400px;
+    width: 100%;
+    background-color: rgba(10, 14, 14, 0.95);
+    border-radius: 12px;
+    display: none;
+    flex-direction: column;
+    animation: chat 1s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+.chat-content-input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    position: relative;
+    color: #a3a3a3 !important; /* Thêm !important để tăng độ ưu tiên */
+    font-size: 13px;
+    background: transparent;
+    border: 0;
+    font-family: "Lato", sans-serif;
+    resize: none;
+    background-color: white;
+}
+
+/* Đảm bảo rằng không có pseudo-classes nào thay đổi màu sắc */
+.chat-content-input:focus,
+.chat-content-input:hover {
+    color: #a3a3a3 !important;
+}
+
+@keyframes chat {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    90%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+.close-chat {
+    display: flex;
+    margin-left: auto;
+    margin-right: 4px;
+}
+i.bx.bx-x {
+    font-size: 30px;
+}
+.content-text {
+    padding: 1em 0 2em;
+    height: calc(100vh - 55px - 2em - 25px * 2 - 0.5em - 3em);
+    overflow: auto;
+    margin: 4px 6px;
+    border-radius: 6px;
+    height: 80%;
+    overflow: auto;
+    z-index: 1000;
+    scrollbar-width: thin; /* Cho Firefox */
+    scrollbar-color: #131719; /* Cho Firefox */
+    background-color: rgba(10, 14, 14, 0.5);
+    box-shadow: 10px 10px 10px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Tùy chỉnh thanh cuộn cho các trình duyệt Webkit */
+#chat .content-text::-webkit-scrollbar {
+    width: 8px; /* Độ rộng thanh cuộn */
+}
+
+#chat .content-text::-webkit-scrollbar-track {
+    background: var(--chat-panel-background); /* Màu nền track thanh cuộn */
+}
+.message-text {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 5px 8px;
+    color: black;
+}
+h3.user_chat {
+    margin-top: 5px;
+    color: #110808;
+    font-weight: bolder;
+}
+p.msg {
+    background-color: #2b2a2a7c;
+    color: rgba(121, 121, 121, 0.74);
+    font-size: 0.75 rem;
+    line-height: 1rem;
+    font-weight: 400;
+    padding: 6px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-top: 5px;
+    max-width: 180px !important;
+}
+.msg_user {
+    border-top-left-radius: 5px;
+}
+.msg_bot {
+    border-top-right-radius: 5px;
+}
+
+.img-chat {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+}
+.img-chatbox {
+    max-width: 180px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.message-bot-text {
+    justify-content: end;
+}
+
+.btn-send-detail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3px;
+    background: #252525;
+    /* opacity:0.5px; */
+    /* background: transparent; */
+    color: var(--chat-text-color);
+    padding: 5px;
+    margin: 5px 10px;
+    border-radius: 6px;
+    gap: 0.5rem;
+    resize: none;
+}
+input[type="file"] {
+    display: none;
+}
+span.icon_1 {
+    font-size: 20px;
+    /* background: red; */
+    color: #e50914;
+    display: flex;
+    text-align: center;
+}
+input[type="text"] {
+    width: 100%;
+    /* border: none; */
+    padding: 6px;
+    border-radius: 5px;
+    outline: none;
+}
+
+span.send {
+    font-size: 25px;
+    color: #e50914;
+    text-align: center;
+    display: flex;
+}
+
+img.thumb.img-thumbnail {
+    width: 100px;
+    object-fit: contain;
+}
+.temp_image {
+    position: absolute;
+    bottom: 50px;
+    left: 20px;
+    opacity: 1;
+    z-index: 10001;
+}
+.skeleton {
+    width: 100px;
+    height: 40px;
+    background-color: #e1e3df;
+    animation: skeleton 500ms linear infinite alternate;
+}
+
+@keyframes skeleton {
+    0% {
+        opacity: 40%;
+    }
+    100% {
+        opacity: 80%;
+    }
+}
