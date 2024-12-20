@@ -105,20 +105,20 @@ window.sendMessage = () => {
     url = "";
 };
 
-window.UserImage =(tag)=>{
+// window.UserImage =(tag)=>{
    
        
-    let avatarInput =document.getElementById('avatarInput')
-    avatarInput.click();
-    avatarInput.addEventListener("input",()=>{
-        let image_url =avatarInput.files[0]
-        let create_url = URL.createObjectURL(image_url)
-        tag.src=`${create_url}`
+//     let avatarInput =document.getElementById('avatarInput')
+//     avatarInput.click();
+//     avatarInput.addEventListener("input",()=>{
+//         let image_url =avatarInput.files[0]
+//         let create_url = URL.createObjectURL(image_url)
+//         tag.src=`${create_url}`
 
-    })
+//     })
         
      
-}
+// }
 
    
 

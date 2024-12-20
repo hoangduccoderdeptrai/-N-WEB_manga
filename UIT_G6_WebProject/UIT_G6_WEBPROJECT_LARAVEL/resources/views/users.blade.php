@@ -99,7 +99,7 @@
                 ?>
             @endif
             <label for="phoneNumber_1">Phone Number</label>
-            <input type="number" placeholder="Enter you phone" id="phoneNumber_1" name="phoneNumber" required>
+            <input type="text" placeholder="Enter you phone" id="phoneNumber_1" name="phoneNumber" required>
             <label for="address_1">Address</label>
             <input type="text" id="address_1" name="address" required placeholder="Enter your address">
             <label for="role_id_1">Role</label>

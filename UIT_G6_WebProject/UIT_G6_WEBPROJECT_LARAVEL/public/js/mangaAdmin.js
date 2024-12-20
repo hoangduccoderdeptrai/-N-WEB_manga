@@ -12,7 +12,7 @@ document.querySelector(".btn-custom").addEventListener("click",()=>{
         <div class="mb-3">
             <label class="form-label">Phân chương</label>
             <div class="input-group">
-                <input type="number" value="${lastValue+1}" class="form-control">
+                <input type="number" value="${lastValue+1}" class="form-control" readonly>
                 <span class="input-group-text">0/14</span>
             </div>
         </div>
@@ -29,6 +29,13 @@ document.querySelector(".btn-custom").addEventListener("click",()=>{
         </div>
     `
     chapterContainer.appendChild(chapterForm)
+    console.log(document.body.scrollHeight)
+    setTimeout(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth"
+        });
+    }, 0);
     chapter+=1
    
 })

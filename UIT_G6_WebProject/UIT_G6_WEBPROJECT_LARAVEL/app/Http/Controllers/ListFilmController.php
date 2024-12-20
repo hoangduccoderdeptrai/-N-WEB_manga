@@ -27,7 +27,7 @@ class ListFilmController extends Controller
 
         // DB::statement($sql);
         // top 10 truyên mới nhất
-        $manga =DB::table('manga')->take(10)->get();
+        $manga =DB::table('manga')->take(5)->get();
 
         // $movies = DB::table('movie_link')
         //     ->join('movie', function ($join) {
@@ -51,7 +51,7 @@ class ListFilmController extends Controller
         return view('index', ["data" => $all, "manga" => $manga]);
     }
 
-    public function redirectToMangaDetail($id)
+    public function redirectToMangaDetail($slug,$id)
     {
         $manga = DB::table('manga')->where('id', $id)->first();
 
@@ -60,7 +60,7 @@ class ListFilmController extends Controller
             abort(404);
         }
 
-        $chapter = DB::table('chapters')->where('id', $manga->id);
+        $chapter = DB::table('chapters')->where('manga_id', $manga->id)->get();
         $genre_name = DB::select("
             SELECT genres.genre_name 
             FROM manga_genres 
@@ -76,6 +76,24 @@ class ListFilmController extends Controller
             'manga'=>$manga,
             'chapter'=>$chapter,
             'genre_name'=>$genre_name
+        ]);
+    }
+    public function redirectToMangaChapter($slug,$id){
+        $manga=DB::table('manga')->where('slug',$slug)->first();
+        if(!$manga){
+            return view('notfound');
+        }
+        $get_image =DB::table('cover_images')->where('chapter_id',$id)->orderBy('id','DESC')->get('url');
+        $get_chapter =DB::table('chapters')->where('manga_id',$manga->id)->get();
+        $get_chapter_name = DB::table('chapters')->where('id',$id)->first();
+        if(!$get_chapter_name){
+            return view('notfound');
+        }
+        return view('chapter',[
+            'manga'=>$manga,
+            'get_chapter'=>$get_chapter,
+            'get_chapter_name'=>$get_chapter_name,
+            'get_image'=>$get_image
         ]);
     }
 

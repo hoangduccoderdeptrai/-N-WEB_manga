@@ -16,6 +16,7 @@ use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Console\View\Components\Mutators\EnsurePunctuation;
 use Illuminate\Routing\Controllers\Middleware;
 use App\Http\Controllers\GeminiController;
+use App\Models\ListFilm;
 
 // Route::get('/', function () {
 //     return view('home');
@@ -38,18 +39,16 @@ Route::get('/token', function () {
 // });
 
 Route::get('/profile', [ProfileController::class, 'get_information'])->name('get_information');
-Route::get('/streamingtv/{id}', [StreamingController::class, 'streamingmovie'])->name('stream');
-Route::get('/streamingmv/{id}', [StreamingController::class, 'streamingmoviemv'])->name('streammv');
-
 Route::get('/search', [SearchController::class, 'showSearchPage'])->name('search.page');
 Route::get('/search/results', [SearchController::class, 'search']);
 // Manga 
 Route::get('/tables',[testController::class,'table'])->middleware(EnsureTokenIsValid::class);
 Route::put('/update-manga/{id}',[testController::class,'update_manga']);
 Route::get('/add-manga',[testController::class,'add_manga']);
-Route::post('/add-manga',[testController::class,'post_manga_test'])    ;
-Route::get('/get-manga/{id}',[testController::class,'get_manga']); 
+Route::post('/add-manga',[testController::class,'post_manga_real'])    ;
+Route::get('/manga/{id}',[testController::class,'get_manga']); 
 Route::delete('/delete-manga/{id}',[testController::class,'delete_manga']);  
+Route::get('/live-search-manga',[testController::class,'live_search_manga']);
 ;
 
 // Voucher
@@ -78,7 +77,7 @@ Route::get('/export-movie',[testController::class,'export_movie']);
 
 
 Route::get('/profile', [ProfileController::class, 'get_information']);
-Route::get('/netjson', [NetjsonController::class, 'get_information']);
+
 
 // // Route để hiển thị form chỉnh sửa profile
 // Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -109,11 +108,9 @@ Route::post("/reset-password", [ForgetPasswordManager::class, "resetPasswordPost
 // Route::post('/only-text',[GeminiController::class,'only_text']);
 Route::post('/text-image',[GeminiController::class,'text_image']);
 
-Route::get('/manga/{id}', [ListFilmController::class, 'redirectToMangaDetail']);
+Route::get('/{slug}/{id}', [ListFilmController::class, 'redirectToMangaDetail']);
 Route::get('/moviesmv/{id}', [ListFilmController::class, 'redirectToMovieDetail_movies'])->name('movies.redirectmovies');
-
-Route::get('/tv/{name}', [MoviesController::class, 'show'])->name('detail');
-Route::get('/mv/{id}', [MoviesController::class, 'showmovies'])->name('detailmovies');
+Route::get('/{slug}/chapter/{id}',[ListFilmController::class,'redirectToMangaChapter']);
 
 //  onclick="redirectTo('' . route('movies.redirectmovies', 168259}) . '')"></a>
 //  onclick="redirectTo('http://127.0.0.1:8000/movies/2')">

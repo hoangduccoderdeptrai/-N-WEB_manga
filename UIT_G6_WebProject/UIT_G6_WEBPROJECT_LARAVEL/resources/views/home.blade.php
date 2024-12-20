@@ -22,7 +22,7 @@
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                    <a href="/add-movie" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                    <a href="/add-manga" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                             class="fas fa-download fa-sm text-white-50"></i>Upload Manga</a>
                 </div>
 
@@ -200,7 +200,7 @@
                         <!-- Project Card Example -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">TOP 10 Newest Movies</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">TOP 10 Newest Manga</h6>
                             </div>
                             <!-- <div class="card-body">
                                                 <h4 class="small font-weight-bold">Server Migration <span
@@ -248,7 +248,7 @@
                                             echo "<tr>
                                                     <td>{$row->id}</td>
                                                     <td>
-                                                        <img src={$row->thumb}/>
+                                                        <img class='img_poster' src='{$row->thumb}'/>
                                                     </td>
                                                     <td>{$row->title}</td>
                                                     <td>{$row->description}</td>

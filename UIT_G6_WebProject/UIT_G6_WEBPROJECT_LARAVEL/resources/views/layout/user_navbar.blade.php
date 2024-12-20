@@ -12,17 +12,17 @@
                 </li>
 
                 <li class="menu-list-item">
-                    <a title="Phim" href="">Phim T.Hình</a>
+                    <a title="Manga" href="">Manga Truyện Tranh</a>
                 </li>
-                <li class="menu-list-item"><a title="Phim" href="/index">Phim</a></li>
+                <li class="menu-list-item"><a title="Phim" href="/index">Manga</a></li>
                 <li class="menu-list-item">
-                    <a title="Phim" href="/profile">Hồ sơ</a>
-                </li>
-                <li class="menu-list-item">
-                    <a title="Phim" href="/index">Danh sách của tôi</a>
+                    <a title="Manga" href="/profile">Hồ sơ</a>
                 </li>
                 <li class="menu-list-item">
-                    <a title="Phim" href="/search">Duyệt tìm theo ngôn ngữ</a>
+                    <a title="Manga" href="/index">Danh sách của tôi</a>
+                </li>
+                <li class="menu-list-item">
+                    <a title="Manga" href="/search">Duyệt tìm theo ngôn ngữ</a>
                 </li>
             </ul>
         </div>

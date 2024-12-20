@@ -63,26 +63,58 @@ window.update_voucher=async(tag)=>{
     document.getElementsByClassName('table-movie')[0].style.pointerEvents='none'
 }
 
-window.update_movie=async(tag)=>{
+window.update_movie1=async(tag)=>{
     const id =tag.value;
-            
-    const response = await fetch(`/get-movie/${id}`)
+    console.log("test") 
+    const response = await fetch(`/manga/${id}`)
     const movie =await response.json();
+    console.log(movie.title)
     // console.log(form[0])
     document.getElementById('update_movie').style.display="flex";
-    document.getElementById('update_movie').setAttribute('action',`/update-movie/${id}`)
+    document.getElementById('update_movie').setAttribute('action',`/update-manga/${id}`)
     console.log(movie[0],movie[0].title)
-    document.querySelector('#name_movie').value=movie[0].title
-    document.querySelector('#description').value =movie[0].description
-    document.querySelector('#category').value=movie[0].category_id
-    document.querySelector('#specialgroup').value=movie[0].specialgroup_id
-    document.querySelector('#episode_status').value=movie[0].episode_status
-    document.querySelector('#movie_link').value =movie[0].movie_link
+    document.querySelector('#name_movie').value=movie.title
+    document.querySelector('#description').value =movie.description
+    document.querySelector('#category').value="test"
+    document.querySelector('#specialgroup').value="test"
+    document.querySelector('#episode_status').value=movie.status
+    document.querySelector('#movie_link').value =movie.thumb
 
     
     // document.getElementsByTagName('body')[0].style.overflow='hidden';
     document.getElementsByClassName('table-movie')[0].style.pointerEvents='none'
 }
+
+window.update_movie = async (tag) => {
+    try {
+        const id = tag.value;
+        console.log("test");
+        const response = await fetch(`/manga/${id}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const movie = await response.json();
+        console.log(movie);
+
+        // Populate the form
+        document.getElementById('update_movie').style.display = "flex";
+        document.getElementById('update_movie').setAttribute('action', `/update-manga/${id}`);
+        document.querySelector('#name_movie').value = movie.title || "";
+        document.querySelector('#description').value = movie.description || "";
+        document.querySelector('#category').value = "test"; // Replace with movie.category if available
+        document.querySelector('#specialgroup').value = "test"; // Replace with movie.specialgroup if available
+        document.querySelector('#episode_status').value = movie.status || "";
+        document.querySelector('#movie_link').value = movie.thumb || "";
+
+        // Disable table interactions
+        document.getElementsByClassName('table-movie')[0].style.pointerEvents = 'none';
+    } catch (error) {
+        console.error('Error fetching or updating the movie:', error);
+    }
+};
+
 
 window.update_user=async(tag)=>{
     const id =tag.value
@@ -114,6 +146,7 @@ window.delete_ =(tag,routing)=>{
     const delete_form =document.querySelector('#form_dlt')
     delete_form.classList.add('no_active')
     delete_form.style.display='flex'
+    console.log(tag.value)
     delete_form.setAttribute('action',`/${routing}/${tag.value}`)
     document.getElementsByClassName('table-movie')[0].style.pointerEvents='none'
 }

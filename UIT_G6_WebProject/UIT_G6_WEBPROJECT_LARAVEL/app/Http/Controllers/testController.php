@@ -19,8 +19,13 @@ use Symfony\Component\Console\Input\Input;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
-
+function convertTitleToSlug($title)
+{
+        $slug = Str::slug($title); // Converts the title to a URL-friendly slug
+        return $slug;
+}
 class testController extends Controller
 {
     public function home()
@@ -44,10 +49,10 @@ class testController extends Controller
         //     echo $msg;
         // }
         return view('tables', [
-            'res' => DB::select("SELECT movie.id,title,movieCategory.name as category from movie,movieCategory
-                                    WHERE movie.category_id =movieCategory.id"),
-            'category' => DB::table('movieCategory')->distinct()->get(),
-            'specialgroup' => DB::table('specialgroup')->distinct()->get()
+            'res' => DB::select("SELECT manga.id,title,thumb,status from manga
+                                    "),
+            'category' => DB::table('genres')->distinct()->get(),
+            'specialgroup' => DB::table('authors')->distinct()->get()
         ]);
     }
     public function add_manga()
@@ -232,6 +237,7 @@ class testController extends Controller
                 'description' => $request->description,
                 'release_date' => NOW(),
                 'status' => $request->episode_status,
+                'slug'=>convertTitleToSlug($request->title),
                 'thumb' => $url_poster,
                 'created_at' => NOW(),
                 'updated_at' => NOW(),
@@ -242,7 +248,20 @@ class testController extends Controller
                 'manga_id' => $insert_manga_id,
                 'genre_id' => $request->genre,
             ]);
-
+            $check =false;
+            // validate image grounp
+            foreach ($request->all() as $key => $files) {
+                // key is chapter ,$files is value
+                if (is_array($files)) {
+                    foreach ($files as $file) {
+                        $request->validate([
+                            "{$key}.*" => 'required|image|mimes:jpeg,png,jpg,gif', // Validate each file
+                        ]);
+                    }
+                    $check=true;
+                }
+            }
+            if($check==false) return Redirect::to('/add-manga')->with(['msg' =>'Add Manga was successful']);
             // Process Chapters
             $number_chapter = 1;
             foreach ($request->all() as $key => $files) {
@@ -281,74 +300,289 @@ class testController extends Controller
         }
     }
 
-
-
-    public function get_movie($id)
+    public function post_manga_real(Request $request)
     {
-        $respose = DB::select(
-            "SELECT category_id,specialgroup_id,title,description,movie_link,poster_link,episode_status FROM movie
-                INNER JOIN movie_link ON link_id =movie_link.id
-                WHERE movie.id={$id}
-                "
-        );
-        return response()->json($respose);
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required|max:255',
+            'poster_link' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048',
+            'episode_status' => 'required|max:255',
+            'genre' => 'required'
+        ]);
+
+        try {
+            $url_poster = null;
+            DB::beginTransaction();
+            // Handle Poster Link
+            if ($request->hasFile('poster_link')) {
+                $file = $request->file('poster_link');
+                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move('uploads/', $filename);
+                $url_poster = url('uploads/' . $filename);
+            }
+
+            // Insert Manga
+            $insert_manga_id = DB::table('manga')->insertGetId([
+                'title' => $request->title,
+                'author_id' => $request->author,
+                'description' => $request->description,
+                'release_date' => now(),
+                'status' => $request->episode_status,
+                'slug' => convertTitleToSlug($request->title),
+                'thumb' => $url_poster,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            // Insert Genre
+            DB::table('manga_genres')->insert([
+                'manga_id' => $insert_manga_id,
+                'genre_id' => $request->genre,
+            ]);
+
+            // Process Chapters
+            $number_chapter = 1;
+            foreach ($request->file() as $key => $files) {
+                if (is_array($files)) {
+                    $fileUrls = [];
+
+                    foreach ($files as $file) {
+                        if ($file instanceof UploadedFile) {
+                            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+                            $file->move('uploads/', $filename);
+                            $fileUrls[] = url('uploads/' . $filename);
+                        }
+                    }
+
+                    if (!empty($fileUrls)) {
+                        $chapter_id = DB::table('chapters')->insertGetId([
+                            'manga_id' => $insert_manga_id,
+                            'chapter_title' => 'Chapter ' . $number_chapter,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+
+                        $coverImagesData = array_map(function ($url) use ($chapter_id) {
+                            return ['chapter_id' => $chapter_id, 'url' => $url];
+                        }, $fileUrls);
+
+                        DB::table('cover_images')->insert($coverImagesData);
+
+                        $number_chapter++;
+                    }
+                }
+            }
+            DB::commit();
+            return Redirect::to('/add-manga')->with(['msg' => 'Manga has been created']);
+        } catch (\Exception $e) {
+            Log::error('Error adding manga: ' . $e->getMessage());
+            return Redirect::to('/add-manga')->with(['msg' => $e->getMessage()]);
+        }
     }
 
-    public function update_movie(Request $request, $id)
+
+
+
+    public function get_manga($id)
+    {
+        $respose = DB::table('manga')->where('id',$id)->first();
+        // $author =DB::table('authors')->where('id',$respose->author_id);
+        // $category = DB::ta
+          
+        
+        return response()->json($respose);
+    }
+    public function update_manga(Request $request, $id)
+{
+    try {
+        // Fetch the manga record by ID
+        $record_manga = DB::table('manga')->where('id', $id)->first();
+
+        if (!$record_manga) {
+            return Redirect::to('/tables')->with(['msg' => 'Manga not found']);
+        }
+
+        $url_poster = $record_manga->thumb; // Default to the existing poster URL
+
+        // Handle poster upload if provided
+        if ($request->hasFile('poster_link')) {
+            $file = $request->file('poster_link');
+
+            // Validate file type and size
+            $request->validate([
+                'poster_link' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move(public_path('uploads'), $filename);
+
+            // // Delete old poster if it exists
+            // if (File::exists(public_path($record_manga->thumb))) {
+            //     File::delete(public_path($record_manga->thumb));
+            // }
+
+            $url_poster = url('uploads/' . $filename);
+        }
+
+        // // Update the manga record
+        // DB::table('manga')->where('id', $id)->limit(1)->update([
+        //     'title' => $request->title,
+        //     'description' => $request->description,
+        //     'release_date' => $record_manga->release_date, // Keep original release date
+        //     'status' => $request->episode_status,
+        //     'slug' => convertTitleToSlug($request->title),
+        //     'thumb' => $url_poster,
+        //     'updated_at' => now(),
+        // ]);
+        DB::table('manga')->where('id', $id)->limit(1)->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'release_date' => $record_manga->release_date, // Keep original release date
+            // 'status' => $request->episode_status,
+            'slug' => convertTitleToSlug($request->title),
+            'thumb' => $url_poster,
+            'updated_at' => now(),
+        ]);
+
+
+        return Redirect::to('/tables')->with(['msg' => 'Manga has been updated']);
+    } catch (\Exception $e) {
+        Log::error('Error updating manga: ' . $e->getMessage());
+        return Redirect::to('/tables')->with(['msg' => 'An error occurred while updating the manga.']);
+    }
+}
+
+
+    public function update_manga1(Request $request, $id)
     {
         // return Redirect::to('/tables')->with(['msg'=>'Moive has been updated']);
         try {
-            $record_movie = DB::table('movie')->find($id);
-            $record_link = DB::table('movie_link')->find($record_movie->link_id);
+            $record_manga = DB::table('manga')->where('id', $id)->first();
             if ($request->has('poster_link')) {
                 $file = $request->file('poster_link');
                 $extension = $file->getClientOriginalExtension();
                 $filename = time() . '.' . $extension;
                 $file->move("uploads/", $filename);
-                if (File::exists($record_link->poster_link)) {
-                    File::delete($record_link->poster_link);
+                if (File::exists($record_manga->thumb)) {
+                    File::delete($record_manga->thumb);
                 }
-                DB::table('movie_link')->where('id', $record_movie->link_id)->limit(1)->update([
-                    'movie_link' => $request->movie_link,
-                    'poster_link' => "uploads/{$filename}",
-                    'episode_status' => $request->episode_status
+                $url_poster = url('uploads/' . $filename);
+                DB::table('manga')->where('id',$id)->limit(1)->update([
+                    'title' => $request->title,
+                    // 'author_id' => $request->author,
+                    'description' => $request->description,
+                    'release_date' => now(),
+                    'status' => $request->episode_status,
+                    'slug' => convertTitleToSlug($request->title),
+                    'thumb' => $url_poster,
+                    'updated_at' => now(),
                 ]);
             } else {
-                DB::table('movie_link')->where('id', $record_movie->link_id)->limit(1)->update([
-                    'movie_link' => $request->movie_link,
-                    'episode_status' => $request->episode_status
+                DB::table('manga')->where('id',$id)->limit(1)->update([
+                    'title' => $request->title,
+                    // 'author_id' => $request->author,
+                    'description' => $request->description,
+                    'release_date' => now(),
+                    'status' => $request->episode_status,
+                    'slug' => convertTitleToSlug($request->title),
+                    'updated_at' => now(),
                 ]);
+                
             }
 
-            DB::table('movie')->where('id', $record_movie->id)->limit(1)->update([
-                'category_id' => $request->category,
-                'specialgroup_id' => $request->specialgroup,
-                'title' => $request->name_movie,
-                'description' => $request->description,
-                'updated_at' => NOW()
-            ]);
+            // DB::table('movie')->where('id', $record_movie->id)->limit(1)->update([
+            //     'category_id' => $request->category,
+            //     'specialgroup_id' => $request->specialgroup,
+            //     'title' => $request->name_movie,
+            //     'description' => $request->description,
+            //     'updated_at' => NOW()
+            // ]);
 
             return Redirect::to('/tables')->with(['msg' => 'Movie has been updated']);
         } catch (\Exception $e) {
             return Redirect::to('/tables')->with(['msg' => $e->getMessage()]);
         }
     }
-    public function delete_movie($id)
+    public function del1ete_manga($id)
     {
+        $id_manga = DB::table('manga')->find($id);
 
-        $id_link_1 = DB::table('movie')->find($id);
-        $image = DB::table('movie_link')->find($id_link_1->link_id);
+        if ($id_manga) {
+            // Get all chapter IDs associated with this manga
+            $id_chapter = DB::table('chapters')
+                ->where('manga_id', $id_manga->id)
+                ->pluck('id'); // Extracts an array of chapter IDs
 
+            // Find images related to these chapters
+            $images = DB::table('cover_images')
+                ->whereIn('chapter_id', $id_chapter)
+                ->get(['url']); // Fetch the 'url' column for these images
+        }
         try {
-            if (File::exists($image->poster_link)) {
-                File::delete($image->poster_link);
+            foreach($images as $url){
+                if (File::exists($url->url)) {
+                    File::delete($url->url);
+                }
             }
+            // if (File::exists($image->poster_link)) {
+            //     File::delete($image->poster_link);
+            // }
+            DB::table('cover_images')->whereIn('chapter_id', $id_chapter)->delete();
+            DB::table('chapters')->where('manga_id',$id_manga)->delete();
             DB::table('movie')->where('id', $id)->distinct()->delete();
-            DB::table('movie_link')->distinct()->delete($id_link_1->link_id);
+            // DB::table('movie_link')->distinct()->delete($id_link_1->link_id);
 
             return Redirect::to('/tables')->with(['msg' => 'Delete was successfull']);
         } catch (\Exception $e) {
             return Redirect::to('/tables')->with(['msg' => $e->getMessage()]);
+        }
+    }
+
+    public function delete_manga($id)
+    {
+        Log::info('Fetching manga record with id: ' . $id);
+        try {
+            // Fetch the manga record
+            $id_manga = DB::table('manga')->find($id);
+            if (!$id_manga) {
+                return Redirect::to('/tables')->with(['msg' => 'Manga not found']);
+            }
+
+            // Get all chapter IDs associated with this manga
+            $id_chapter = DB::table('chapters')
+                ->where('manga_id', $id_manga->id)
+                ->pluck('id');
+
+            if ($id_chapter->isEmpty()) {
+                DB::table('manga_genres')->where('manga_id',$id_manga->id)->delete();
+                DB::table('manga')->where('id', $id_manga->id)->delete();
+                return Redirect::to('/tables')->with(['msg' => 'Delete was successful']);
+            }
+
+            // Find images related to these chapters
+            $images = DB::table('cover_images')
+                ->whereIn('chapter_id', $id_chapter)
+                ->get(['url']);
+
+            // Delete related files
+            foreach ($images as $image) {
+                if (File::exists($image->url)) {
+                    File::delete($image->url);
+                }
+            }
+
+            // Delete related records
+            DB::table('cover_images')->whereIn('chapter_id', $id_chapter)->delete();
+            DB::table('manga_genres')->where('manga_id',$id_manga->id)->delete();
+            DB::table('chapters')->whereIn('id', $id_chapter)->delete();
+            DB::table('manga')->where('id', $id_manga->id)->delete();
+
+            return Redirect::to('/tables')->with(['msg' => 'Delete was successful']);
+        } catch (\Exception $e) {
+            // Log the error for debugging purposes
+            Log::error('Error deleting manga: ' . $e->getMessage());
+            return Redirect::to('/tables')->with(['msg' => 'An error occurred while deleting the manga.']);
         }
     }
   
@@ -438,6 +672,22 @@ class testController extends Controller
             return response()->json(['msg' => $e->getMessage()]);
         }
     }
+    public function live_search_manga(Request $request){
+        
+        try {
+
+            if ($request->has('query')) {
+                $slug =convertTitleToSlug($request->query('query'));
+                $query_manga = DB::table('manga')->where('slug', 'like', "{$slug}%")->orderBy('id')->get();
+            } else {
+                $query_manga = DB::table('manga')->limit(10)->offset(0)->orderBy('id')->get();
+            }
+
+            return response()->json(['data' => $query_manga]);
+        } catch (\Exception $e) {
+            return response()->json(['msg' => $e->getMessage()]);
+        }
+    }
     public function add_user(Request $request)
     {
         $request->validate([
@@ -478,7 +728,7 @@ class testController extends Controller
         $request->validate([
             'email'=>'email:rfc,dns',
             'avartar'=>'nullable|mimes:png,jpg,jpeg,web',
-            'phoneNumber'=>'integer|required'
+            'phoneNumber' => 'required|regex:/^\+?[0-9\s\-\(\)]{7,20}$/'
 
         ]);
         try{
@@ -506,8 +756,6 @@ class testController extends Controller
                 'phoneNumber'=>$request->phoneNumber,
                 'address'=>$request->address,
                 'role_id'=>$request->role_id,
-                'plan_id'=>1,
-                
                 'updated_at'=>NOW()
             ]);
             DB::table('users')->where('email',$email[0]->email)->update([
@@ -542,13 +790,10 @@ class testController extends Controller
         ]);
     }
 
-    public function mail_to(Request $request,$id){
+    public function mail_to1(Request $request,$id){
      
         $user =user_model::find($id);
         
-        
-       
-
         
         $detail=[
             'subject'=>$request->subject,
@@ -560,6 +805,35 @@ class testController extends Controller
         $user->notify(new SendEmailNotification($detail));
         return Redirect::to('/send-mail')->with(['msg'=>'Send Mail was successful']);
     }
+    public function mail_to(Request $request, $id)
+    {
+        // Validate the incoming request
+        $validated = $request->validate([
+            'subject' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+
+        try {
+            // Find the user by ID
+            $user = user_model::find($id);
+
+            // Notification details
+            $detail = [
+                'subject' => $validated['subject'],
+                'greeting' => 'Dear Sir',
+                'content' => $validated['content'],
+            ];
+
+            // Notify the user
+            $user->notify(new SendEmailNotification($detail));
+
+            return redirect()->route('send-mail')->with('msg', 'Send Mail was successful');
+        } catch (\Exception $e) {
+            // Handle errors (e.g., user not found or email sending failure)
+            return redirect()->route('send-mail')->with('error', 'Failed to send mail: ' . $e->getMessage());
+        }
+    }
+
     // export excel
     public function export_user(){
         return Excel::download(new UsersExport(),'users.xlsx');

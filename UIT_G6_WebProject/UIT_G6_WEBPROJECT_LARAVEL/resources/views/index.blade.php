@@ -60,7 +60,7 @@
             <span class="tag">Truyện Màu</span>
           </div>
           <div class="buttons">
-            <button class="btn btn-primary">Đọc ngay</button>
+            <a href="/dao-hai-tac/9" class="btn btn-primary">Đọc ngay</a>
             <button class="btn btn-secondary">Thông tin</button>
           </div>
         </div>
@@ -75,7 +75,18 @@
     <div class="slider-container">
         <button class="arrow left"  id="leftArrow">&lt;</button>
         <div class="slider" id="slider">
-            <div class="manga-card">
+            @if(!$manga->isEmpty())
+                @foreach($manga as $item)
+                    <a href="/{{$item->slug}}/{{$item->id}}" class="manga-card">
+                        <img src="{{$item->thumb}}" draggable="false" alt="Manga 1">
+                        <div class="info">
+                            <div class="title">{{$item->title}}</div>
+                            <div class="details">Chapter 239 · 1 tuần trước</div>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+            {{-- <div class="manga-card">
                 <img src="https://via.placeholder.com/200x300" draggable="false" alt="Manga 1">
                 <div class="info">
                     <div class="title">Ta Trở Sinh Đã Là Nhân ...</div>
@@ -88,8 +99,8 @@
                     <div class="title">Thể Thao Cực Hạn</div>
                     <div class="details">Chapter 489 · 9 tháng trước</div>
                 </div>
-            </div>
-            <div class="manga-card">
+            </div> --}}
+            {{-- <div class="manga-card">
                 <img src="https://via.placeholder.com/200x300" draggable="false" alt="Manga 3">
                 <div class="info">
                     <div class="title">Cuộc Hôn Nhân Vụ Lợi</div>
@@ -109,7 +120,7 @@
                     <div class="title">Ái Phi, Dao Của Nàng Rở...</div>
                     <div class="details">Chapter 97 · 2 tuần trước</div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <button class="arrow right" id="rightArrow">&gt;</button>
     </div>
@@ -122,7 +133,20 @@
                     <div class="card-body">
                         <h2 class="card-title text-warning">Truyện tranh HOT đọc nhiều nhất</h2>
                         <div class="row g-3">
-                            <div class="col-md-3">
+                            @if(!$data->isEmpty())
+                                @foreach($data as $item)
+                                    <div class="col-md-3">
+                                        <a href="/{{$item->slug}}/{{$item->id}}" class="card">
+                                            <img src="{{$item->thumb}}" class="card-img-top" alt="Manga {{$item->id}}">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title">{{$item->title}}</h5>
+                                                <p class="card-text">Chapter</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            @endif
+                            {{-- <div class="col-md-3">
                                 <a href="/manga/{{$data[0]->id}}" class="card">
                                     <img src="{{$data[0]->thumb}}" class="card-img-top" alt="Manga 1">
                                     <div class="card-body text-center">
@@ -130,8 +154,8 @@
                                         <p class="card-text">Chapter 42</p>
                                     </div>
                                 </a>
-                            </div>
-                            <div class="col-md-3">
+                            </div> --}}
+                            {{-- <div class="col-md-3">
                                 <div class="card">
                                     <img src="https://via.placeholder.com/200x300" class="card-img-top" alt="Manga 2">
                                     <div class="card-body text-center">
@@ -139,8 +163,8 @@
                                         <p class="card-text">Chapter 633</p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
+                            </div> --}}
+                            {{-- <div class="col-md-3">
                                 <div class="card">
                                     <img src="https://via.placeholder.com/200x300" class="card-img-top" alt="Manga 2">
                                     <div class="card-body text-center">
@@ -148,8 +172,8 @@
                                         <p class="card-text">Chapter 633</p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
+                            </div> --}}
+                            {{-- <div class="col-md-3">
                                 <div class="card">
                                     <img src="https://via.placeholder.com/200x300" class="card-img-top" alt="Manga 2">
                                     <div class="card-body text-center">
@@ -157,8 +181,8 @@
                                         <p class="card-text">Chapter 633</p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
+                            </div> --}}
+                            {{-- <div class="col-md-3">
                                 <div class="card">
                                     <img src="https://via.placeholder.com/200x300" class="card-img-top" alt="Manga 2">
                                     <div class="card-body text-center">
@@ -166,8 +190,8 @@
                                         <p class="card-text">Chapter 633</p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
+                            </div> --}}
+                            {{-- <div class="col-md-3">
                                 <div class="card">
                                     <img src="https://via.placeholder.com/200x300" class="card-img-top" alt="Manga 2">
                                     <div class="card-body text-center">
@@ -175,8 +199,8 @@
                                         <p class="card-text">Chapter 633</p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
+                            </div> --}}
+                            {{-- <div class="col-md-3">
                                 <div class="card">
                                     <img src="https://via.placeholder.com/200x300" class="card-img-top" alt="Manga 2">
                                     <div class="card-body text-center">
@@ -184,8 +208,8 @@
                                         <p class="card-text">Chapter 633</p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
+                            </div> --}}
+                            {{-- <div class="col-md-3">
                                 <div class="card">
                                     <img src="https://via.placeholder.com/200x300" class="card-img-top" alt="Manga 2">
                                     <div class="card-body text-center">
@@ -193,8 +217,8 @@
                                         <p class="card-text">Chapter 633</p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
+                            </div> --}}
+                            {{-- <div class="col-md-3">
                                 <div class="card">
                                     <img src="https://via.placeholder.com/200x300" class="card-img-top" alt="Manga 2">
                                     <div class="card-body text-center">
@@ -202,7 +226,7 @@
                                         <p class="card-text">Chapter 633</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         <!-- Add more manga items as needed -->
                         </div>
                     </div>
@@ -234,7 +258,7 @@
     <!-- nav bar -->
     @include('layout.user_footer');
 </body>
-<script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function() {
         const rowposterwidth = document.querySelector(".row-poster").offsetWidth;
         const rowposters1 = document.getElementById('rowpost1');
@@ -308,7 +332,7 @@
     function redirectTo(url) {
         window.location.href = url;
     }
-</script>
+</script> --}}
 <script src="js/logout.js"></script>
 <script src="js/script.js"></script>
 <script src="js/manga.js" defer></script>

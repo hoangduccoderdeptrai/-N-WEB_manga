@@ -64,18 +64,18 @@
         @include('layout.user_navbar')
         <main style="color: white" class="main-detail">
             <div class="manga-container">
-                <div class="manga-header">
+                <div  class="manga-header">
                   <img src="{{$manga->thumb}}" alt="Shy Cover" class="manga-cover">
                   <div class="manga-info">
                     <h1 class="manga-title">{{$manga->title}}</h1>
-                    <button class="read-now">📖 Đọc ngay</button>
+                    <a href="/{{$manga->slug}}/chapter/{{$chapter[0]->id}}" class="read-now">📖 Đọc ngay</a>
                     <button class="bookmark">💾 Thêm vào danh sách yêu thích</button>
                     <div class="genres">
                       <p>Thể loại :</p>
                       <span class="genre">Action</span>
                       <span class="genre">Drama</span>
                       <span class="genre">Fantasy</span>
-                      <span class="genre">{{$genre_name}}</span>
+                      <span class="genre">{{$genre_name[0]->genre_name}}</span>
                       
                     </div>
                     <p class="description">
@@ -109,7 +109,20 @@
                     <button class="tab">Cũ nhất</button>
                   </div>
                   <div class="chapters">
-                    <div class="chapter">
+                    @if(!$chapter->isEmpty())
+                        
+                        @foreach($chapter as $ch)
+                            {{-- <li>{{ $ch->chapter_name }} (Chapter ID: {{ $ch->id }})</li> --}}
+                            <div  class="chapter">
+                                <span>📄 {{$ch->chapter_title}}</span>
+                                <a href="/{{$manga->slug}}/chapter/{{$ch->id}}"  class="read-btn text-dark">📖 Read</a>
+                            </div>
+                        @endforeach
+                        
+                    @else
+                        <p>No chapters available for this manga.</p>
+                    @endif
+                    {{-- <div class="chapter">
                       <span>📄 Chương 107</span>
                       <button class="read-btn">📖 Read</button>
                     </div>
@@ -125,6 +138,22 @@
                       <span>📄 Chương 104</span>
                       <button class="read-btn">📖 Read</button>
                     </div>
+                    <div class="chapter">
+                        <span>📄 Chương 104</span>
+                        <button class="read-btn">📖 Read</button>
+                      </div>
+                      <div class="chapter">
+                        <span>📄 Chương 104</span>
+                        <button class="read-btn">📖 Read</button>
+                      </div>
+                      <div class="chapter">
+                        <span>📄 Chương 104</span>
+                        <button class="read-btn">📖 Read</button>
+                      </div>
+                      <div class="chapter">
+                        <span>📄 Chương 104</span>
+                        <button class="read-btn">📖 Read</button>
+                      </div> --}}
                     <!-- Add more chapters as needed -->
                   </div>
                   <div class="pagination">1</div>

@@ -9,6 +9,7 @@ document.getElementById("callApiButton").addEventListener("click", function () {
     .getElementById("fileInput")
     .addEventListener("change", function (event) {
       const files = event.target.files;
+      
       if (files && files.length > 0) {
         displayFolderContents(files);
   
